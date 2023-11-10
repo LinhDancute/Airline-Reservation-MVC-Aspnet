@@ -42,10 +42,8 @@ namespace App.Models
         public DbSet<App.Models.Airline.BoardingPass> BoardingPasses { get; set; }
         public DbSet<App.Models.Airline.Flight> Flights { get; set; }
         public DbSet<App.Models.Airline.FlightDetail> FlightDetails { get; set; }
-
         public DbSet<App.Models.Airline.FlightRoute> FlightRoutes { get; set; }
         public DbSet<App.Models.Airline.Ticket> Tickets { get; set; }
-
         public DbSet<App.Models.Airline.TicketClass> TicketClasses { get; set; }
         public DbSet<App.Models.Statistical.AnnualRevenue> AnnualRevenues { get; set; }
         public DbSet<App.Models.Statistical.Invoice> Invoices { get; set; }
