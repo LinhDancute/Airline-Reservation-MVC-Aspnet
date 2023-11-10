@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using App.Models.Contacts;
 using App.Models;
+using App.Models.Airline;
 
 namespace App.Models
 {
@@ -35,6 +36,20 @@ namespace App.Models
             }
         }
 
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<App.Models.Contacts.Contact> Contacts { get; set; }
+        public DbSet<App.Models.Airline.Airline> Airlines { get; set; }
+        public DbSet<App.Models.Airline.Airport> Airports { get; set; }
+        public DbSet<App.Models.Airline.BoardingPass> BoardingPasses { get; set; }
+        public DbSet<App.Models.Airline.Flight> Flights { get; set; }
+        public DbSet<App.Models.Airline.FlightDetail> FlightDetails { get; set; }
+
+        public DbSet<App.Models.Airline.FlightRoute> FlightRoutes { get; set; }
+        public DbSet<App.Models.Airline.Ticket> Tickets { get; set; }
+
+        public DbSet<App.Models.Airline.TicketClass> TicketClasses { get; set; }
+        public DbSet<App.Models.Statistical.AnnualRevenue> AnnualRevenues { get; set; }
+        public DbSet<App.Models.Statistical.Invoice> Invoices { get; set; }
+        public DbSet<App.Models.Statistical.MonthlyRevenue> MonthlyRevenues { get; set; }
+        public DbSet<App.Models.Statistical.UnitPrice> UnitPrices { get; set; }
     }
 }

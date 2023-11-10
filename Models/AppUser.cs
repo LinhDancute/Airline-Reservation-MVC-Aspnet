@@ -12,5 +12,12 @@ namespace App.Models
 
         [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
+
+        [Column(TypeName = "nvarchar")]
+        [StringLength(12)]
+        [Required(ErrorMessage = "Phải nhập  {0}")]
+        [Display(Name = "CMND")]
+        public string CMND { get; set; }
+        
     }
 }
