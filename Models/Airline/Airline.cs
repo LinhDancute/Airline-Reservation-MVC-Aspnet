@@ -22,5 +22,8 @@ namespace App.Models.Airline
             Deluxe,
             Eco
         }
+        // MayBay - ChuyenBay : n-1
+        public ICollection<Flight> Flights { get; } = new List<Flight>();
+
     }
 }

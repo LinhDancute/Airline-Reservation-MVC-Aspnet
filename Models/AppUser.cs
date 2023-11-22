@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using App.Models.Airline;
+using App.Models.Statistical;
 using Bogus.DataSets;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,9 +17,11 @@ namespace App.Models
 
         [Column(TypeName = "nvarchar")]
         [StringLength(12)]
-        [Required(ErrorMessage = "Phải nhập  {0}")]
         [Display(Name = "CMND")]
-        public string CMND { get; set; }
-        
+        public string? CMND { get; set; }
+
+        public ICollection<BoardingPass> BoardingPasses { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Invoice> Invoices { get; set; }
     }
 }

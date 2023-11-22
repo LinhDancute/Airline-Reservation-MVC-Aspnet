@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AppMvc.Net.Migrations
+namespace AirlineReservationVietjet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -60,6 +60,9 @@ namespace AppMvc.Net.Migrations
                         .HasMaxLength(6)
                         .HasColumnType("nvarchar(6)");
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
@@ -67,16 +70,42 @@ namespace AppMvc.Net.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FlightRouteId")
+                    b.Property<string>("FlightId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PassengerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Seat")
                         .HasColumnType("int");
 
                     b.HasKey("BoardingPassId");
 
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("FlightId");
+
+                    b.HasIndex("PassengerId");
+
                     b.ToTable("BoardingPasses");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.BoardingPass_TicketClass", b =>
+                {
+                    b.Property<string>("BoardingPassID")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("TicketClassID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BoardingPassID", "TicketClassID");
+
+                    b.HasIndex("TicketClassID");
+
+                    b.ToTable("BoardingPass_TicketClasses", (string)null);
                 });
 
             modelBuilder.Entity("App.Models.Airline.Flight", b =>
@@ -86,7 +115,7 @@ namespace AppMvc.Net.Migrations
 
                     b.Property<string>("AirlineId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -112,6 +141,8 @@ namespace AppMvc.Net.Migrations
 
                     b.HasKey("FlightId");
 
+                    b.HasIndex("AirlineId");
+
                     b.ToTable("Flights");
                 });
 
@@ -125,7 +156,7 @@ namespace AppMvc.Net.Migrations
 
                     b.Property<string>("FlightId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("IntermediateAirport")
                         .HasColumnType("nvarchar(max)");
@@ -134,6 +165,9 @@ namespace AppMvc.Net.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("FlightDetailId");
+
+                    b.HasIndex("FlightId")
+                        .IsUnique();
 
                     b.ToTable("FlightDetails");
                 });
@@ -161,13 +195,43 @@ namespace AppMvc.Net.Migrations
                     b.ToTable("FlightRoutes");
                 });
 
+            modelBuilder.Entity("App.Models.Airline.FlightRoute_Airport", b =>
+                {
+                    b.Property<string>("FlightRouteID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AirportID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("FlightRouteID", "AirportID");
+
+                    b.HasIndex("AirportID");
+
+                    b.ToTable("FlightRoute_Airports", (string)null);
+                });
+
+            modelBuilder.Entity("App.Models.Airline.FlightRoute_Flight", b =>
+                {
+                    b.Property<string>("FlightRouteID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FlightID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("FlightRouteID", "FlightID");
+
+                    b.HasIndex("FlightID");
+
+                    b.ToTable("FlightRoute_Flights", (string)null);
+                });
+
             modelBuilder.Entity("App.Models.Airline.Ticket", b =>
                 {
-                    b.Property<int>("TicketId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("TicketId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CMND")
                         .IsRequired()
@@ -176,8 +240,11 @@ namespace AppMvc.Net.Migrations
 
                     b.Property<string>("FlightId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PassengerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PriceId")
                         .HasColumnType("int");
@@ -185,7 +252,20 @@ namespace AppMvc.Net.Migrations
                     b.Property<bool>("Published")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("UnitPricePriceId")
+                        .HasColumnType("int");
+
                     b.HasKey("TicketId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("FlightId");
+
+                    b.HasIndex("PassengerId");
+
+                    b.HasIndex("PriceId");
+
+                    b.HasIndex("UnitPricePriceId");
 
                     b.ToTable("Tickets");
                 });
@@ -317,6 +397,47 @@ namespace AppMvc.Net.Migrations
                     b.ToTable("Contacts");
                 });
 
+            modelBuilder.Entity("App.Models.Staff.Staff", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Staffs");
+                });
+
+            modelBuilder.Entity("App.Models.Staff.StaffRole", b =>
+                {
+                    b.Property<string>("StaffId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("StaffId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("StaffRoles", (string)null);
+                });
+
             modelBuilder.Entity("App.Models.Statistical.AnnualRevenue", b =>
                 {
                     b.Property<int>("AnnualRevenueId")
@@ -352,6 +473,10 @@ namespace AppMvc.Net.Migrations
                     b.Property<int>("MonthlyRevenueId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PassengerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("StaffId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -360,6 +485,10 @@ namespace AppMvc.Net.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("InvoiceId");
+
+                    b.HasIndex("MonthlyRevenueId");
+
+                    b.HasIndex("PassengerId");
 
                     b.HasIndex("StaffId");
 
@@ -540,13 +669,185 @@ namespace AppMvc.Net.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("App.Models.Statistical.Invoice", b =>
+            modelBuilder.Entity("App.Models.Airline.BoardingPass", b =>
                 {
-                    b.HasOne("App.Models.AppUser", "Staff")
+                    b.HasOne("App.Models.AppUser", null)
+                        .WithMany("BoardingPasses")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("App.Models.Airline.Flight", "Flight")
+                        .WithMany("BoardingPasses")
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.AppUser", "Passenger")
                         .WithMany()
+                        .HasForeignKey("PassengerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flight");
+
+                    b.Navigation("Passenger");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.BoardingPass_TicketClass", b =>
+                {
+                    b.HasOne("App.Models.Airline.BoardingPass", "BoardingPass")
+                        .WithMany()
+                        .HasForeignKey("BoardingPassID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Airline.TicketClass", "TicketClass")
+                        .WithMany()
+                        .HasForeignKey("TicketClassID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BoardingPass");
+
+                    b.Navigation("TicketClass");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.Flight", b =>
+                {
+                    b.HasOne("App.Models.Airline.Airline", "Airline")
+                        .WithMany("Flights")
+                        .HasForeignKey("AirlineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airline");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.FlightDetail", b =>
+                {
+                    b.HasOne("App.Models.Airline.Flight", "Flight")
+                        .WithOne("FlightDetail")
+                        .HasForeignKey("App.Models.Airline.FlightDetail", "FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flight");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.FlightRoute_Airport", b =>
+                {
+                    b.HasOne("App.Models.Airline.Airport", "Airport")
+                        .WithMany("FlightRoute_Airports")
+                        .HasForeignKey("AirportID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Airline.FlightRoute", "FlightRoute")
+                        .WithMany("FlightRoute_Airports")
+                        .HasForeignKey("FlightRouteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airport");
+
+                    b.Navigation("FlightRoute");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.FlightRoute_Flight", b =>
+                {
+                    b.HasOne("App.Models.Airline.Flight", "Flight")
+                        .WithMany()
+                        .HasForeignKey("FlightID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Airline.FlightRoute", "FlightRoute")
+                        .WithMany("FlightRoute_Flights")
+                        .HasForeignKey("FlightRouteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flight");
+
+                    b.Navigation("FlightRoute");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.Ticket", b =>
+                {
+                    b.HasOne("App.Models.AppUser", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("App.Models.Airline.Flight", "Flight")
+                        .WithMany("Tickets")
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.AppUser", "Passenger")
+                        .WithMany()
+                        .HasForeignKey("PassengerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Statistical.UnitPrice", "UnitPrice")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Statistical.UnitPrice", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("UnitPricePriceId");
+
+                    b.Navigation("Flight");
+
+                    b.Navigation("Passenger");
+
+                    b.Navigation("UnitPrice");
+                });
+
+            modelBuilder.Entity("App.Models.Staff.StaffRole", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Staff.Staff", "Staff")
+                        .WithMany("StaffRoles")
                         .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("App.Models.Statistical.Invoice", b =>
+                {
+                    b.HasOne("App.Models.Statistical.MonthlyRevenue", "MonthlyRevenue")
+                        .WithMany("Invoices")
+                        .HasForeignKey("MonthlyRevenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.AppUser", "Passenger")
+                        .WithMany("Invoices")
+                        .HasForeignKey("PassengerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Staff.Staff", "Staff")
+                        .WithMany("Invoices")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MonthlyRevenue");
+
+                    b.Navigation("Passenger");
 
                     b.Navigation("Staff");
                 });
@@ -600,6 +901,59 @@ namespace AppMvc.Net.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("App.Models.Airline.Airline", b =>
+                {
+                    b.Navigation("Flights");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.Airport", b =>
+                {
+                    b.Navigation("FlightRoute_Airports");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.Flight", b =>
+                {
+                    b.Navigation("BoardingPasses");
+
+                    b.Navigation("FlightDetail")
+                        .IsRequired();
+
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("App.Models.Airline.FlightRoute", b =>
+                {
+                    b.Navigation("FlightRoute_Airports");
+
+                    b.Navigation("FlightRoute_Flights");
+                });
+
+            modelBuilder.Entity("App.Models.AppUser", b =>
+                {
+                    b.Navigation("BoardingPasses");
+
+                    b.Navigation("Invoices");
+
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("App.Models.Staff.Staff", b =>
+                {
+                    b.Navigation("Invoices");
+
+                    b.Navigation("StaffRoles");
+                });
+
+            modelBuilder.Entity("App.Models.Statistical.MonthlyRevenue", b =>
+                {
+                    b.Navigation("Invoices");
+                });
+
+            modelBuilder.Entity("App.Models.Statistical.UnitPrice", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

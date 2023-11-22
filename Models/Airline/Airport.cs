@@ -24,5 +24,8 @@ namespace App.Models.Airline
             Domestic,
             International
         }
+
+        // N-N relationship with TuyenBay
+        public ICollection<FlightRoute_Airport> FlightRoute_Airports { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace App.Models.Statistical
         public int AnnualRevenueId { get; set; }
         public long TicketByMonth { get; set; }
         public decimal Revenue { get; set; }
+        public ICollection<Invoice> Invoices { get; set; }
     }
 }

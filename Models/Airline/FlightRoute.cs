@@ -22,6 +22,14 @@ namespace App.Models.Airline
 
         [Display(Name = "Cổng quốc tế/nội địa")]
         public GateType Gate { get; set; }
+
+        
+        // N-N relationship with SanBay
+        public ICollection<FlightRoute_Airport> FlightRoute_Airports { get; set; }
+
+        // N-N relationship with ChuyenBay
+        public ICollection<FlightRoute_Flight> FlightRoute_Flights { get; set; }
+
     }
 
     public enum GateType
@@ -29,5 +37,4 @@ namespace App.Models.Airline
         DomesticGate,
         InternationalGate
     }
-
 }

@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using App.Models.Contacts;
 using App.Models;
 using App.Models.Airline;
+using App.Models.Configurations;
+using App.Models.Statistical;
+using App.Models.Staff;
 
 namespace App.Models
 {
@@ -34,6 +37,36 @@ namespace App.Models
                     entityType.SetTableName(tableName.Substring(6));
                 }
             }
+            modelBuilder.ApplyConfiguration(new FlightConfiguration());
+            modelBuilder.ApplyConfiguration(new FlightDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardingPassConfiguration());
+            modelBuilder.ApplyConfiguration(new TicketConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
+
+
+            modelBuilder.Entity<StaffRole>(e =>
+            {
+                e.ToTable("StaffRoles");
+                e.HasKey(pc => new { pc.StaffId, pc.RoleId });
+            });
+
+            modelBuilder.Entity<FlightRoute_Airport>(e =>
+            {
+                e.ToTable("FlightRoute_Airports");
+                e.HasKey(pc => new { pc.FlightRouteID, pc.AirportID });
+            });
+
+            modelBuilder.Entity<FlightRoute_Flight>(e =>
+            {
+                e.ToTable("FlightRoute_Flights");
+                e.HasKey(pc => new { pc.FlightRouteID, pc.FlightID });
+            });
+
+            modelBuilder.Entity<BoardingPass_TicketClass>(e =>
+            {
+                e.ToTable("BoardingPass_TicketClasses");
+                e.HasKey(pc => new { pc.BoardingPassID, pc.TicketClassID });
+            });
         }
 
         public DbSet<App.Models.Contacts.Contact> Contacts { get; set; }
@@ -49,5 +82,8 @@ namespace App.Models
         public DbSet<App.Models.Statistical.Invoice> Invoices { get; set; }
         public DbSet<App.Models.Statistical.MonthlyRevenue> MonthlyRevenues { get; set; }
         public DbSet<App.Models.Statistical.UnitPrice> UnitPrices { get; set; }
+        public DbSet<App.Models.Staff.Staff> Staffs { get; set; }
+        public DbSet<App.Models.Staff.StaffRole> StaffRoles { get; set; }
+
     }
 }

@@ -79,6 +79,7 @@ namespace App.Areas.Database.Controllers
                     UserName = "admin",
                     Email = "admin@example.com",
                     EmailConfirmed = true,
+                    CMND = "123456789",
                 };
                 await _userManager.CreateAsync(useradmin, "123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);

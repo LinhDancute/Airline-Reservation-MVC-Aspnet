@@ -20,5 +20,7 @@ namespace App.Models.Airline
 
         [Display(Name = "Ghi chú")]
         public string? Description { set; get; }
+
+        public Flight Flight { get; set; }
     }
 }

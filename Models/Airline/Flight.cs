@@ -23,5 +23,15 @@ namespace App.Models.Airline
         public int? DeluxeSeat { get; set; }
         public int? SkyBossSeat { get; set; }
         public int? SkyBossBusinessSeat { get; set; }
+
+        public Airline Airline { get; set; }
+        public FlightDetail FlightDetail { get; set; }
+
+
+        // ChuyenBay - PhieuDatCho : n-1
+        // ChuyenBay - VeMayBay : n-1
+        public ICollection<BoardingPass> BoardingPasses { get; } = new List<BoardingPass>();
+        public ICollection<Ticket> Tickets { get; } = new List<Ticket>();
+
     }
 }
