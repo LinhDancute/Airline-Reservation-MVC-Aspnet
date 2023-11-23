@@ -10,7 +10,7 @@ namespace App.Models.Airline
         [Key]
         public string FlightId { get; set; }
 
-        public string AirlineId { get; set; }
+        public int AirlineId { get; set; }
         public string FlightDetailId { get; set; }
 
         [DataType(DataType.Date)]

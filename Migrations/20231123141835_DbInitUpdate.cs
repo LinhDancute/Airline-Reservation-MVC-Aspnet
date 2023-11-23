@@ -6,21 +6,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AirlineReservationVietjet.Migrations
 {
     /// <inheritdoc />
-    public partial class DbInit : Migration
+    public partial class DbInitUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Airlines",
+                name: "Airline",
                 columns: table => new
                 {
-                    AirlineId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AirlineName = table.Column<int>(type: "int", maxLength: 50, nullable: false)
+                    AirlineId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentAirlineId = table.Column<int>(type: "int", nullable: true),
+                    AirlineName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Airlines", x => x.AirlineId);
+                    table.PrimaryKey("PK_Airline", x => x.AirlineId);
+                    table.ForeignKey(
+                        name: "FK_Airline_Airline_ParentAirlineId",
+                        column: x => x.ParentAirlineId,
+                        principalTable: "Airline",
+                        principalColumn: "AirlineId");
                 });
 
             migrationBuilder.CreateTable(
@@ -130,7 +137,7 @@ namespace AirlineReservationVietjet.Migrations
                 columns: table => new
                 {
                     TicketId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TicketName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    TicketName = table.Column<int>(type: "int", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,7 +165,7 @@ namespace AirlineReservationVietjet.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     HomeAddress = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CMND = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    CMND = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -184,7 +191,7 @@ namespace AirlineReservationVietjet.Migrations
                 columns: table => new
                 {
                     FlightId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AirlineId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AirlineId = table.Column<int>(type: "int", nullable: false),
                     FlightDetailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FlightTime = table.Column<float>(type: "real", nullable: false),
@@ -197,9 +204,9 @@ namespace AirlineReservationVietjet.Migrations
                 {
                     table.PrimaryKey("PK_Flights", x => x.FlightId);
                     table.ForeignKey(
-                        name: "FK_Flights_Airlines_AirlineId",
+                        name: "FK_Flights_Airline_AirlineId",
                         column: x => x.AirlineId,
-                        principalTable: "Airlines",
+                        principalTable: "Airline",
                         principalColumn: "AirlineId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -543,6 +550,11 @@ namespace AirlineReservationVietjet.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Airline_ParentAirlineId",
+                table: "Airline",
+                column: "ParentAirlineId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BoardingPass_TicketClasses_TicketClassID",
                 table: "BoardingPass_TicketClasses",
                 column: "TicketClassID");
@@ -744,7 +756,7 @@ namespace AirlineReservationVietjet.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Airlines");
+                name: "Airline");
         }
     }
 }

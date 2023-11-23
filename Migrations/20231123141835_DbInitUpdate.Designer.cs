@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirlineReservationVietjet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231122081156_DbInit")]
-    partial class DbInit
+    [Migration("20231123141835_DbInitUpdate")]
+    partial class DbInitUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,16 +27,25 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.Airline", b =>
                 {
-                    b.Property<string>("AirlineId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AirlineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<int>("AirlineName")
-                        .HasMaxLength(50)
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AirlineId"));
+
+                    b.Property<string>("AirlineName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("ParentAirlineId")
                         .HasColumnType("int");
 
                     b.HasKey("AirlineId");
 
-                    b.ToTable("Airlines");
+                    b.HasIndex("ParentAirlineId");
+
+                    b.ToTable("Airline");
                 });
 
             modelBuilder.Entity("App.Models.Airline.Airport", b =>
@@ -116,9 +125,8 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<string>("FlightId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AirlineId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AirlineId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -278,10 +286,9 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<string>("TicketId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TicketName")
-                        .IsRequired()
+                    b.Property<int>("TicketName")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.HasKey("TicketId");
 
@@ -300,7 +307,6 @@ namespace AirlineReservationVietjet.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CMND")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar");
 
@@ -672,6 +678,15 @@ namespace AirlineReservationVietjet.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("App.Models.Airline.Airline", b =>
+                {
+                    b.HasOne("App.Models.Airline.Airline", "ParentAirline")
+                        .WithMany("AirlineChildren")
+                        .HasForeignKey("ParentAirlineId");
+
+                    b.Navigation("ParentAirline");
+                });
+
             modelBuilder.Entity("App.Models.Airline.BoardingPass", b =>
                 {
                     b.HasOne("App.Models.AppUser", null)
@@ -908,6 +923,8 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.Airline", b =>
                 {
+                    b.Navigation("AirlineChildren");
+
                     b.Navigation("Flights");
                 });
 

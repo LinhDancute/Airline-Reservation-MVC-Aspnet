@@ -13,7 +13,14 @@ namespace App.Models.Airline
         [StringLength(50)]
         [Required(ErrorMessage = "Phải nhập hạng vé")]
         [Display(Name = "Tên hạng vé")]
-        public string TicketName { get; set; }
+        public TicketClassType TicketName { get; set; }
 
+        public enum TicketClassType
+        {
+            SkybossBusiness,
+            Skyboss,
+            Deluxe,
+            Eco
+        }
     }
 }
