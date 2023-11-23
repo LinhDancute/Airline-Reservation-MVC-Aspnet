@@ -8,7 +8,7 @@ namespace App.Models.Airline
     public class Airport
     {
         [Key]
-        public String AirportId { get; set; }
+        public int AirportId { get; set; }
 
         [Column(TypeName = "nvarchar")]
         [StringLength(50)]
@@ -16,6 +16,10 @@ namespace App.Models.Airline
         [Display(Name = "Tên sân bay")]
         public string AirportName { get; set; }
 
+        // Nội dung, thông tin chi tiết về sân bay
+        [DataType(DataType.Text)]
+        [Display(Name = "Nội dung mô tả sân bay")]
+        public string? Description { set; get; }
 
         [Display(Name = "Phân loại sân bay")]
         public AirportClassification Classification { get; set; }
@@ -26,6 +30,6 @@ namespace App.Models.Airline
         }
 
         // N-N relationship with TuyenBay
-        public ICollection<FlightRoute_Airport> FlightRoute_Airports { get; set; }
+        public ICollection<FlightRoute_Airport>? FlightRoute_Airports { get; set; }
     }
 }

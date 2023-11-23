@@ -9,7 +9,7 @@ namespace App.Models.Airline
     public class FlightRoute_Airport
     {
         public String FlightRouteID { set; get; }
-        public String AirportID { set; get; }
+        public int AirportID { set; get; }
 
 
         [ForeignKey("FlightRouteID")]

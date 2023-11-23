@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AirlineReservationVietjet.Migrations
 {
     /// <inheritdoc />
-    public partial class DbInitUpdate : Migration
+    public partial class DbInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,9 @@ namespace AirlineReservationVietjet.Migrations
                     AirlineId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParentAirlineId = table.Column<int>(type: "int", nullable: true),
-                    AirlineName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    AirlineName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,8 +36,10 @@ namespace AirlineReservationVietjet.Migrations
                 name: "Airports",
                 columns: table => new
                 {
-                    AirportId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AirportId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AirportName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Classification = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -216,7 +220,7 @@ namespace AirlineReservationVietjet.Migrations
                 columns: table => new
                 {
                     FlightRouteID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AirportID = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AirportID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

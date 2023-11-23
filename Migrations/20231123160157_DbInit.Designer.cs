@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirlineReservationVietjet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231123141835_DbInitUpdate")]
-    partial class DbInitUpdate
+    [Migration("20231123160157_DbInit")]
+    partial class DbInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,16 @@ namespace AirlineReservationVietjet.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ParentAirlineId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("AirlineId");
 
@@ -50,8 +58,11 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.Airport", b =>
                 {
-                    b.Property<string>("AirportId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AirportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AirportId"));
 
                     b.Property<string>("AirportName")
                         .IsRequired()
@@ -60,6 +71,9 @@ namespace AirlineReservationVietjet.Migrations
 
                     b.Property<int>("Classification")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AirportId");
 
@@ -211,8 +225,8 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<string>("FlightRouteID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AirportID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AirportID")
+                        .HasColumnType("int");
 
                     b.HasKey("FlightRouteID", "AirportID");
 

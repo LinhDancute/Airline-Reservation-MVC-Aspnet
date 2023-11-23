@@ -190,4 +190,6 @@ dotnet aspnet-codegenerator controller -name DbManage -outDir Areas/Database/Con
 JSON
     "AirlineReservationDb": "Data Source=127.0.0.1,1433; Initial Catalog=AirlineReservationDB; User ID=SA;Password=yunbrayyunh; TrustServerCertificate=true;",
     "AirlineReservationConnectionString": "Server=(localdb)\\mssqllocaldb;Database=App;Trusted_Connection=True;MultipleActiveResultSets=true"
+
+
 */
