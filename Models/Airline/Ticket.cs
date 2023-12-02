@@ -6,19 +6,20 @@ namespace App.Models.Airline
 {
     public class Ticket{
         [Key]
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
 
+        [Required(ErrorMessage = "Phải nhập chuyến bay")]
+        [Display(Name = "Chuyến bay")]
+        public int FlightId { get; set; }
+
+        public int PriceId { get; set; }
+        
         [Column(TypeName = "nvarchar")]
         [StringLength(12)]
         [Required(ErrorMessage = "Phải nhập  {0}")]
         [Display(Name = "CMND")]
         public string CMND { get; set; }
-
-        [Required(ErrorMessage = "Phải nhập chuyến bay")]
-        [Display(Name = "Chuyến bay")]
-        public string FlightId { get; set; }
-        public int PriceId { get; set; }
-
+        
         [Display(Name = "Phát hành")]
         public bool Published { get; set; }
 

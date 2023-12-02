@@ -8,9 +8,8 @@ namespace App.Models.Airline
     public class BoardingPass
     {
         [Key]
-        [StringLength(6)]
-        public string BoardingPassId { get; set; }
-        public string FlightId { get; set; }
+        public int BoardingPassId { get; set; }
+        public int FlightId { get; set; }
         public string CMND { get; set; }
 
         [DataType(DataType.Date)]

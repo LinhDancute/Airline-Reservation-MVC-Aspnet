@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirlineReservationVietjet.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231123160157_DbInit")]
-    partial class DbInit
+    [Migration("20231202155936_UpdateAModel")]
+    partial class UpdateAModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,11 @@ namespace AirlineReservationVietjet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AirportId"));
 
+                    b.Property<string>("Abbreviation")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
                     b.Property<string>("AirportName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -75,6 +80,9 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("AirportId");
 
                     b.ToTable("Airports");
@@ -82,9 +90,11 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.BoardingPass", b =>
                 {
-                    b.Property<string>("BoardingPassId")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                    b.Property<int>("BoardingPassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BoardingPassId"));
 
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
@@ -96,9 +106,8 @@ namespace AirlineReservationVietjet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FlightId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PassengerId")
                         .IsRequired()
@@ -120,12 +129,11 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.BoardingPass_TicketClass", b =>
                 {
-                    b.Property<string>("BoardingPassID")
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                    b.Property<int>("BoardingPassID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("TicketClassID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TicketClassID")
+                        .HasColumnType("int");
 
                     b.HasKey("BoardingPassID", "TicketClassID");
 
@@ -136,8 +144,11 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.Flight", b =>
                 {
-                    b.Property<string>("FlightId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlightId"));
 
                     b.Property<int>("AirlineId")
                         .HasColumnType("int");
@@ -150,10 +161,6 @@ namespace AirlineReservationVietjet.Migrations
 
                     b.Property<int?>("EcoSeat")
                         .HasColumnType("int");
-
-                    b.Property<string>("FlightDetailId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("FlightTime")
                         .HasColumnType("real");
@@ -171,36 +178,13 @@ namespace AirlineReservationVietjet.Migrations
                     b.ToTable("Flights");
                 });
 
-            modelBuilder.Entity("App.Models.Airline.FlightDetail", b =>
-                {
-                    b.Property<string>("FlightDetailId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FlightId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("IntermediateAirport")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float?>("LayoverTime")
-                        .HasColumnType("real");
-
-                    b.HasKey("FlightDetailId");
-
-                    b.HasIndex("FlightId")
-                        .IsUnique();
-
-                    b.ToTable("FlightDetails");
-                });
-
             modelBuilder.Entity("App.Models.Airline.FlightRoute", b =>
                 {
-                    b.Property<string>("FlightRouteId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightRouteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlightRouteId"));
 
                     b.Property<string>("ArrivalAddress")
                         .IsRequired()
@@ -215,6 +199,9 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<int>("Gate")
                         .HasColumnType("int");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("FlightRouteId");
 
                     b.ToTable("FlightRoutes");
@@ -222,8 +209,8 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.FlightRoute_Airport", b =>
                 {
-                    b.Property<string>("FlightRouteID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightRouteID")
+                        .HasColumnType("int");
 
                     b.Property<int>("AirportID")
                         .HasColumnType("int");
@@ -237,11 +224,11 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.FlightRoute_Flight", b =>
                 {
-                    b.Property<string>("FlightRouteID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightRouteID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("FlightID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightID")
+                        .HasColumnType("int");
 
                     b.HasKey("FlightRouteID", "FlightID");
 
@@ -252,8 +239,11 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.Ticket", b =>
                 {
-                    b.Property<string>("TicketId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
 
                     b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
@@ -263,9 +253,8 @@ namespace AirlineReservationVietjet.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar");
 
-                    b.Property<string>("FlightId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FlightId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PassengerId")
                         .IsRequired()
@@ -297,12 +286,19 @@ namespace AirlineReservationVietjet.Migrations
 
             modelBuilder.Entity("App.Models.Airline.TicketClass", b =>
                 {
-                    b.Property<string>("TicketId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("TicketName")
-                        .HasMaxLength(50)
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TicketName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("TicketId");
 
@@ -754,17 +750,6 @@ namespace AirlineReservationVietjet.Migrations
                     b.Navigation("Airline");
                 });
 
-            modelBuilder.Entity("App.Models.Airline.FlightDetail", b =>
-                {
-                    b.HasOne("App.Models.Airline.Flight", "Flight")
-                        .WithOne("FlightDetail")
-                        .HasForeignKey("App.Models.Airline.FlightDetail", "FlightId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Flight");
-                });
-
             modelBuilder.Entity("App.Models.Airline.FlightRoute_Airport", b =>
                 {
                     b.HasOne("App.Models.Airline.Airport", "Airport")
@@ -950,9 +935,6 @@ namespace AirlineReservationVietjet.Migrations
             modelBuilder.Entity("App.Models.Airline.Flight", b =>
                 {
                     b.Navigation("BoardingPasses");
-
-                    b.Navigation("FlightDetail")
-                        .IsRequired();
 
                     b.Navigation("Tickets");
                 });

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AirlineReservationVietjet.Migrations
 {
     /// <inheritdoc />
-    public partial class DbInit : Migration
+    public partial class UpdateAModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,8 +39,10 @@ namespace AirlineReservationVietjet.Migrations
                     AirportId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AirportName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Abbreviation = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Classification = table.Column<int>(type: "int", nullable: false)
+                    Classification = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,10 +84,12 @@ namespace AirlineReservationVietjet.Migrations
                 name: "FlightRoutes",
                 columns: table => new
                 {
-                    FlightRouteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FlightRouteId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DepartureAddress = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ArrivalAddress = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Gate = table.Column<int>(type: "int", nullable: false)
+                    Gate = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,8 +144,10 @@ namespace AirlineReservationVietjet.Migrations
                 name: "TicketClasses",
                 columns: table => new
                 {
-                    TicketId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TicketName = table.Column<int>(type: "int", maxLength: 50, nullable: false)
+                    TicketId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TicketName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -194,9 +200,9 @@ namespace AirlineReservationVietjet.Migrations
                 name: "Flights",
                 columns: table => new
                 {
-                    FlightId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FlightId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AirlineId = table.Column<int>(type: "int", nullable: false),
-                    FlightDetailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FlightTime = table.Column<float>(type: "real", nullable: false),
                     EcoSeat = table.Column<int>(type: "int", nullable: true),
@@ -219,7 +225,7 @@ namespace AirlineReservationVietjet.Migrations
                 name: "FlightRoute_Airports",
                 columns: table => new
                 {
-                    FlightRouteID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FlightRouteID = table.Column<int>(type: "int", nullable: false),
                     AirportID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -408,8 +414,9 @@ namespace AirlineReservationVietjet.Migrations
                 name: "BoardingPasses",
                 columns: table => new
                 {
-                    BoardingPassId = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    FlightId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BoardingPassId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FlightId = table.Column<int>(type: "int", nullable: false),
                     CMND = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Seat = table.Column<int>(type: "int", nullable: false),
@@ -439,32 +446,11 @@ namespace AirlineReservationVietjet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FlightDetails",
-                columns: table => new
-                {
-                    FlightDetailId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FlightId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IntermediateAirport = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LayoverTime = table.Column<float>(type: "real", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FlightDetails", x => x.FlightDetailId);
-                    table.ForeignKey(
-                        name: "FK_FlightDetails_Flights_FlightId",
-                        column: x => x.FlightId,
-                        principalTable: "Flights",
-                        principalColumn: "FlightId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FlightRoute_Flights",
                 columns: table => new
                 {
-                    FlightRouteID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FlightID = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    FlightRouteID = table.Column<int>(type: "int", nullable: false),
+                    FlightID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -487,10 +473,11 @@ namespace AirlineReservationVietjet.Migrations
                 name: "Tickets",
                 columns: table => new
                 {
-                    TicketId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CMND = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
-                    FlightId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TicketId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FlightId = table.Column<int>(type: "int", nullable: false),
                     PriceId = table.Column<int>(type: "int", nullable: false),
+                    CMND = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     Published = table.Column<bool>(type: "bit", nullable: false),
                     PassengerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -533,8 +520,8 @@ namespace AirlineReservationVietjet.Migrations
                 name: "BoardingPass_TicketClasses",
                 columns: table => new
                 {
-                    BoardingPassID = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    TicketClassID = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    BoardingPassID = table.Column<int>(type: "int", nullable: false),
+                    TicketClassID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -577,12 +564,6 @@ namespace AirlineReservationVietjet.Migrations
                 name: "IX_BoardingPasses_PassengerId",
                 table: "BoardingPasses",
                 column: "PassengerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FlightDetails_FlightId",
-                table: "FlightDetails",
-                column: "FlightId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_FlightRoute_Airports_AirportID",
@@ -695,9 +676,6 @@ namespace AirlineReservationVietjet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contacts");
-
-            migrationBuilder.DropTable(
-                name: "FlightDetails");
 
             migrationBuilder.DropTable(
                 name: "FlightRoute_Airports");

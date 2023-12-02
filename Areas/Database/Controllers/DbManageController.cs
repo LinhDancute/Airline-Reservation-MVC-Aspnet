@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Data;
 using App.Models;
+using App.Models.Airline;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -84,8 +85,31 @@ namespace App.Areas.Database.Controllers
                 await _userManager.CreateAsync(useradmin, "123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
             }
+
+            SeedTicketClass();
+
             StatusMessage = "Vừa seed Database";
             return RedirectToAction("Index");
         }
+
+        private async Task SeedTicketClass()
+        {
+            // Check if TicketClasses already exist
+            if (_dbContext.TicketClasses.Any())
+            {
+                return; // Database has been seeded
+            }
+
+            // Add TicketClass entities without specifying TicketId
+            _dbContext.TicketClasses.AddRange(
+                new TicketClass { TicketName = "SkybossBusiness" },
+                new TicketClass { TicketName = "Skyboss" },
+                new TicketClass { TicketName = "Deluxe" },
+                new TicketClass { TicketName = "Eco" }
+            );
+
+            await _dbContext.SaveChangesAsync();
+        }
+
     }
 }

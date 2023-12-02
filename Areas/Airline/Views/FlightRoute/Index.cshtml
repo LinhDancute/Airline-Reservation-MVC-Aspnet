@@ -1,25 +1,25 @@
-@model IEnumerable<App.Models.Airline.Airport>
+@model IEnumerable<App.Models.Airline.FlightRoute>
 @using App.Models.Airline
 
 @{
-    ViewData["Title"] = "Danh sách sân bay";
+    ViewData["Title"] = "Danh sách tuyến bay";
 }
 
 <h1>@ViewData["Title"]</h1>
 <p>
-    <a asp-action="Create" class="btn btn-primary">Tạo sân bay mới</a>
+    <a asp-action="Create" class="btn btn-primary">Tạo tuyến bay mới</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.First().AirportName)
+                @Html.DisplayNameFor(model => model.First().DepartureAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Abbreviation)
+                @Html.DisplayNameFor(model => model.First().ArrivalAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Classification)
+                @Html.DisplayNameFor(model => model.Gate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -31,7 +31,7 @@
 
         @foreach (var item in Model)
         {
-            await RenderAirport(item, 0);
+            await RenderFlightRoute(item, 0);
         }
 
     </tbody>
@@ -39,7 +39,7 @@
 </table>
 
 @{
-    async Task RenderAirport(Airport item, int level)
+    async Task RenderFlightRoute(FlightRoute item, int level)
     {
         if (item is null)
         {
@@ -50,17 +50,19 @@
         <tr>
             <td>
                 @Html.Raw(prefix)
-                <a asp-action="Edit" asp-route-id="@item.AirportId">
-                    @Html.DisplayFor(modelItem => item.AirportName)
+                <a asp-action="Edit" asp-route-id="@item.FlightRouteId">
+                    @Html.DisplayFor(modelItem => item.DepartureAddress)
+                </a>
+            </td>
+            <td>
+                @Html.Raw(prefix)
+                <a asp-action="Edit" asp-route-id="@item.FlightRouteId">
+                    @Html.DisplayFor(modelItem => item.ArrivalAddress)
                 </a>
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.Abbreviation)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Classification)
+                @Html.DisplayFor(modelItem => item.Gate)
             </td>
 
             <td>
@@ -68,8 +70,8 @@
             </td>
 
             <td>
-                <a asp-action="Details" asp-route-id="@item.AirportId">Chi tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.AirportId">Xóa</a>
+                <a asp-action="Details" asp-route-id="@item.FlightRouteId">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.FlightRouteId">Xóa</a>
             </td>
         </tr>
     }

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using App.Models;
 using Microsoft.AspNetCore.Authorization;
 using App.Data;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace App.Areas.Airport.Controllers
 {
@@ -53,7 +52,7 @@ namespace App.Areas.Airport.Controllers
     // POST: /Airport/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AirportName,Description,Classification")] Models.Airline.Airport airport)
+    public async Task<IActionResult> Create([Bind("AirportName,Abbreviation,Description,Classification,Status")] Models.Airline.Airport airport)
     {
         if (ModelState.IsValid)
         {
@@ -96,7 +95,7 @@ namespace App.Areas.Airport.Controllers
     // POST: /Airport/Edit/1
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("AirportId,AirportName,Description,Classification")] Models.Airline.Airport airport)
+    public async Task<IActionResult> Edit(int id, [Bind("AirportId,AirportName,Abbreviation,Description,Classification,Status")] Models.Airline.Airport airport)
     {
         if (id != airport.AirportId)
         {

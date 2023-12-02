@@ -8,7 +8,7 @@ namespace App.Models.Airline
     public class FlightRoute
     {
         [Key]
-        public string FlightRouteId { get; set; }
+        public int FlightRouteId { get; set; }
 
         [StringLength(50)]
         [Required(ErrorMessage = "Phải nhập điểm đi")]
@@ -22,19 +22,26 @@ namespace App.Models.Airline
 
         [Display(Name = "Cổng quốc tế/nội địa")]
         public GateType Gate { get; set; }
-
         
+        [Display(Name = "Trạng thái hoạt động")]
+        public StatusType Status { get; set; }
+
+        public enum GateType
+        {
+            DomesticGate,
+            InternationalGate
+        }
+
+        public enum StatusType
+        {
+            Active,
+            Inactvie
+        }
         // N-N relationship with SanBay
-        public ICollection<FlightRoute_Airport> FlightRoute_Airports { get; set; }
+        public ICollection<FlightRoute_Airport>? FlightRoute_Airports { get; set; }
 
         // N-N relationship with ChuyenBay
-        public ICollection<FlightRoute_Flight> FlightRoute_Flights { get; set; }
+        public ICollection<FlightRoute_Flight>? FlightRoute_Flights { get; set; }
 
-    }
-
-    public enum GateType
-    {
-        DomesticGate,
-        InternationalGate
     }
 }

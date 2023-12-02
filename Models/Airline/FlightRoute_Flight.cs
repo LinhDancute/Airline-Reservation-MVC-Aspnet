@@ -8,8 +8,8 @@ namespace App.Models.Airline
     [Table("FlightRoute_Flight")]
     public class FlightRoute_Flight
     {
-        public String FlightRouteID { set; get; }
-        public String FlightID { set; get; }
+        public int FlightRouteID { set; get; }
+        public int FlightID { set; get; }
 
 
         [ForeignKey("FlightRouteID")]

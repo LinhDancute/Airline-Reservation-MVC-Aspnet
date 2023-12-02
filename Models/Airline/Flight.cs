@@ -8,10 +8,9 @@ namespace App.Models.Airline
     public class Flight
     {
         [Key]
-        public string FlightId { get; set; }
+        public int FlightId { get; set; }
 
         public int AirlineId { get; set; }
-        public string FlightDetailId { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
@@ -25,13 +24,11 @@ namespace App.Models.Airline
         public int? SkyBossBusinessSeat { get; set; }
 
         public Airline Airline { get; set; }
-        public FlightDetail FlightDetail { get; set; }
-
 
         // ChuyenBay - PhieuDatCho : n-1
         // ChuyenBay - VeMayBay : n-1
-        public ICollection<BoardingPass> BoardingPasses { get; } = new List<BoardingPass>();
-        public ICollection<Ticket> Tickets { get; } = new List<Ticket>();
+        public ICollection<BoardingPass>? BoardingPasses { get; } = new List<BoardingPass>();
+        public ICollection<Ticket>? Tickets { get; } = new List<Ticket>();
 
     }
 }

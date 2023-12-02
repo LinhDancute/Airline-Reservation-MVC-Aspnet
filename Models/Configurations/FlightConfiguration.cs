@@ -11,11 +11,6 @@ namespace App.Models.Configurations {
                 .WithMany(a => a.Flights)
                 .HasForeignKey(f => f.AirlineId)
                 .IsRequired();
-
-            builder.HasOne(f => f.FlightDetail)
-                .WithOne(fd => fd.Flight)
-                .HasForeignKey<FlightDetail>(fd => fd.FlightId)
-                .IsRequired();
         }
     }
 }

@@ -12,11 +12,18 @@ namespace App.Models
     public class AppDbContext : IdentityDbContext<AppUser>
     {
         private readonly IConfiguration _configuration;
-        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration)
-        : base(options)
+        private readonly ILogger<AppDbContext> _logger;
+
+        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration, ILogger<AppDbContext> logger)
+            : base(options)
         {
             _configuration = configuration;
+            _logger = logger;
+
+            // Enable logging
+            this.Database.SetCommandTimeout(150); // Optionally set command timeout
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //base.OnConfiguring(optionsBuilder);
@@ -38,7 +45,6 @@ namespace App.Models
                 }
             }
             modelBuilder.ApplyConfiguration(new FlightConfiguration());
-            modelBuilder.ApplyConfiguration(new FlightDetailConfiguration());
             modelBuilder.ApplyConfiguration(new BoardingPassConfiguration());
             modelBuilder.ApplyConfiguration(new TicketConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
@@ -74,7 +80,6 @@ namespace App.Models
         public DbSet<App.Models.Airline.Airport> Airports { get; set; }
         public DbSet<App.Models.Airline.BoardingPass> BoardingPasses { get; set; }
         public DbSet<App.Models.Airline.Flight> Flights { get; set; }
-        public DbSet<App.Models.Airline.FlightDetail> FlightDetails { get; set; }
         public DbSet<App.Models.Airline.FlightRoute> FlightRoutes { get; set; }
         public DbSet<App.Models.Airline.Ticket> Tickets { get; set; }
         public DbSet<App.Models.Airline.TicketClass> TicketClasses { get; set; }

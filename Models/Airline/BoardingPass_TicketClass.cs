@@ -8,9 +8,8 @@ namespace App.Models.Airline
     [Table("BoardingPass_TicketClass")]
     public class BoardingPass_TicketClass
     {
-        [StringLength(6)]
-        public string BoardingPassID { set; get; }
-        public string TicketClassID { set; get; }
+        public int BoardingPassID { set; get; }
+        public int TicketClassID { set; get; }
 
 
         [ForeignKey("BoardingPassID")]

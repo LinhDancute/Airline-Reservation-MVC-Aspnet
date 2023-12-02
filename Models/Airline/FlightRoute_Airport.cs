@@ -8,7 +8,7 @@ namespace App.Models.Airline
     [Table("FlightRoute_Airport")]
     public class FlightRoute_Airport
     {
-        public String FlightRouteID { set; get; }
+        public int FlightRouteID { set; get; }
         public int AirportID { set; get; }
 
 
