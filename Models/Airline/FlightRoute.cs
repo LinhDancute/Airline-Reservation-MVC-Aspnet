@@ -1,6 +1,4 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Models.Airline
 {
@@ -20,10 +18,16 @@ namespace App.Models.Airline
         [Display(Name = "Điểm đến")]
         public string ArrivalAddress { get; set; }
 
+        [Display(Name = "Chặng bay")]
+        public string? FlightSector { get; set; }
+
+        [Display(Name = "Chặng bay")]
+        public string? FlightSectorName { get; set; }
+
         [Display(Name = "Cổng quốc tế/nội địa")]
         public GateType Gate { get; set; }
         
-        [Display(Name = "Trạng thái hoạt động")]
+        [Display(Name = "Trạng thái")]
         public StatusType Status { get; set; }
 
         public enum GateType
@@ -35,7 +39,7 @@ namespace App.Models.Airline
         public enum StatusType
         {
             Active,
-            Inactvie
+            Inactive
         }
         // N-N relationship with SanBay
         public ICollection<FlightRoute_Airport>? FlightRoute_Airports { get; set; }

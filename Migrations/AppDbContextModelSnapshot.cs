@@ -38,6 +38,12 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IATAcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ICAOcode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ParentAirlineId")
                         .HasColumnType("int");
 
@@ -147,8 +153,16 @@ namespace AirlineReservationVietjet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlightId"));
 
-                    b.Property<int>("AirlineId")
+                    b.Property<string>("Aircraft")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("AirlineId")
+                        .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<TimeSpan?>("ArrivalTime")
+                        .IsRequired()
+                        .HasColumnType("time");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -156,10 +170,23 @@ namespace AirlineReservationVietjet.Migrations
                     b.Property<int?>("DeluxeSeat")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan?>("DepartureTime")
+                        .IsRequired()
+                        .HasColumnType("time");
+
                     b.Property<int?>("EcoSeat")
                         .HasColumnType("int");
 
-                    b.Property<float>("FlightTime")
+                    b.Property<string>("FlightNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlightSector")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("FlightTime")
+                        .IsRequired()
                         .HasColumnType("real");
 
                     b.Property<int?>("SkyBossBusinessSeat")
@@ -167,6 +194,10 @@ namespace AirlineReservationVietjet.Migrations
 
                     b.Property<int?>("SkyBossSeat")
                         .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Status");
 
                     b.HasKey("FlightId");
 
@@ -192,6 +223,12 @@ namespace AirlineReservationVietjet.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FlightSector")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlightSectorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gate")
                         .HasColumnType("int");
@@ -769,7 +806,7 @@ namespace AirlineReservationVietjet.Migrations
             modelBuilder.Entity("App.Models.Airline.FlightRoute_Flight", b =>
                 {
                     b.HasOne("App.Models.Airline.Flight", "Flight")
-                        .WithMany()
+                        .WithMany("FlightRoute_Flights")
                         .HasForeignKey("FlightID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -932,6 +969,8 @@ namespace AirlineReservationVietjet.Migrations
             modelBuilder.Entity("App.Models.Airline.Flight", b =>
                 {
                     b.Navigation("BoardingPasses");
+
+                    b.Navigation("FlightRoute_Flights");
 
                     b.Navigation("Tickets");
                 });

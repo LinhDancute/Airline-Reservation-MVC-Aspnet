@@ -89,6 +89,9 @@ namespace App.Models
         public DbSet<App.Models.Statistical.UnitPrice> UnitPrices { get; set; }
         public DbSet<App.Models.Staff.Staff> Staffs { get; set; }
         public DbSet<App.Models.Staff.StaffRole> StaffRoles { get; set; }
+        public DbSet<App.Models.Airline.FlightRoute_Airport> FlightRoute_Airports { get; set; }
+        public DbSet<App.Models.Airline.FlightRoute_Flight> FlightRoute_Flights { get; set; }
+        public DbSet<App.Models.Airline.BoardingPass_TicketClass> BoardingPass_TicketClasses { get; set; }
 
     }
 }

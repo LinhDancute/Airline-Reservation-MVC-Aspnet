@@ -57,7 +57,7 @@ namespace App.Areas.Airline.Controllers
             string prefix = string.Concat(Enumerable.Repeat("----", level));
             foreach (var airline in source)
             {
-                des.Add(new Models.Airline.Airline()
+                des.Add(new App.Models.Airline.Airline()
                 {
                     AirlineId = airline.AirlineId,
                     AirlineName = prefix + " " + airline.AirlineName
@@ -84,13 +84,13 @@ namespace App.Areas.Airline.Controllers
             var airlines = (await qr.ToListAsync())
                              .Where(a => a.ParentAirline == null)
                              .ToList();
-            airlines.Insert(0, new Models.Airline.Airline()
+            airlines.Insert(0, new App.Models.Airline.Airline()
             {
                 AirlineId = -1,
                 AirlineName = "Không có máy bay cha"
             });
 
-            var items = new List<Models.Airline.Airline>();
+            var items = new List<App.Models.Airline.Airline>();
             CreateSelectItems(airlines, items, 0);
             var selectList = new SelectList(items, "AirlineId", "AirlineName");
 
@@ -101,7 +101,7 @@ namespace App.Areas.Airline.Controllers
         // POST: /Airline/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AirlineName,Description,Slug,ParentAirlineId")] Models.Airline.Airline airline)
+        public async Task<IActionResult> Create([Bind("AirlineName,ICAOcode,IATAcode,Description,Slug,ParentAirlineId")] App.Models.Airline.Airline airline)
         {
 
             // Ensure ParentAirlineId is set correctly
@@ -139,13 +139,13 @@ namespace App.Areas.Airline.Controllers
             var airlines = (await qr.ToListAsync())
                              .Where(a => a.ParentAirline == null)
                              .ToList();
-            airlines.Insert(0, new Models.Airline.Airline()
+            airlines.Insert(0, new App.Models.Airline.Airline()
             {
                 AirlineId = -1,
                 AirlineName = "Không có máy bay cha"
             });
 
-            var items = new List<Models.Airline.Airline>();
+            var items = new List<App.Models.Airline.Airline>();
             CreateSelectItems(airlines, items, 0);
             var selectList = new SelectList(items, "AirlineId", "AirlineName");
 
@@ -176,13 +176,13 @@ namespace App.Areas.Airline.Controllers
             var airlines = (await qr.ToListAsync())
                              .Where(a => a.ParentAirline == null)
                              .ToList();
-            airlines.Insert(0, new Models.Airline.Airline()
+            airlines.Insert(0, new App.Models.Airline.Airline()
             {
                 AirlineId = -1,
                 AirlineName = "Không có máy bay cha"
             });
 
-            var items = new List<Models.Airline.Airline>();
+            var items = new List<App.Models.Airline.Airline>();
             CreateSelectItems(airlines, items, 0);
             var selectList = new SelectList(items, "AirlineId", "AirlineName");
 
@@ -193,7 +193,7 @@ namespace App.Areas.Airline.Controllers
         // POST: /Airline/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AirlineId,AirlineName,Description,Slug,ParentAirlineId")] App.Models.Airline.Airline airline)
+        public async Task<IActionResult> Edit(int id, [Bind("AirlineId,AirlineName,ICAOcode,IATAcode,Description,Slug,ParentAirlineId")] App.Models.Airline.Airline airline)
         {
             if (id != airline.AirlineId)
             {
@@ -219,7 +219,7 @@ namespace App.Areas.Airline.Controllers
 
 
                 // Func check Id 
-                Func<List<Models.Airline.Airline>, bool> checkAirlineIds = null;
+                Func<List<App.Models.Airline.Airline>, bool> checkAirlineIds = null;
                 checkAirlineIds = (airs) =>
                     {
                         foreach (var air in airs)
@@ -275,13 +275,13 @@ namespace App.Areas.Airline.Controllers
             var airlines = (await qr.ToListAsync())
                              .Where(a => a.ParentAirline == null)
                              .ToList();
-            airlines.Insert(0, new Models.Airline.Airline()
+            airlines.Insert(0, new App.Models.Airline.Airline()
             {
                 AirlineId = -1,
                 AirlineName = "Không có máy bay cha"
             });
 
-            var items = new List<Models.Airline.Airline>();
+            var items = new List<App.Models.Airline.Airline>();
             CreateSelectItems(airlines, items, 0);
             var selectList = new SelectList(items, "AirlineId", "AirlineName");
 

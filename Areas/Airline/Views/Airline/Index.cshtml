@@ -16,6 +16,12 @@
                 @Html.DisplayNameFor(model => model.First().AirlineName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.First().ICAOcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().IATAcode)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Slug)
             </th>
             <th>
@@ -50,6 +56,12 @@
                 <a asp-action="Edit" asp-route-id="@item.AirlineId">
                     @Html.DisplayFor(modelItem => item.AirlineName)
                 </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ICAOcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IATAcode)
             </td>
 
             <td>

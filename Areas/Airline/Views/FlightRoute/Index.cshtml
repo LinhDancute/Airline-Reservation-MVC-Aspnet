@@ -19,12 +19,18 @@
                 @Html.DisplayNameFor(model => model.First().ArrivalAddress)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.First().FlightSector)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FlightSectorName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Gate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th></th>
+            <th>Tác vụ</th>
         </tr>
     </thead>
     <tbody>
@@ -60,7 +66,12 @@
                     @Html.DisplayFor(modelItem => item.ArrivalAddress)
                 </a>
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightSector)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightSectorName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Gate)
             </td>

@@ -25,6 +25,16 @@
                 <span asp-validation-for="AirlineName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ICAOcode" class="control-label"></label>
+                <input asp-for="ICAOcode" class="form-control" />
+                <span asp-validation-for="ICAOcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IATAcode" class="control-label"></label>
+                <input asp-for="IATAcode" class="form-control" />
+                <span asp-validation-for="IATAcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea rows="5" asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>

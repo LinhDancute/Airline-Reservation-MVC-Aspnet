@@ -54,7 +54,7 @@ namespace App.Areas.Airline.Controllers
         // POST: /TicketClass/Create
         [HttpPost, ActionName(nameof(Create))]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketName,Description")] Models.Airline.TicketClass ticketClass)
+        public async Task<IActionResult> Create([Bind("TicketName,Description")] App.Models.Airline.TicketClass ticketClass)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace App.Areas.Airline.Controllers
         // POST: /ticketClass/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketId,TicketName,Description")] Models.Airline.TicketClass ticketClass)
+        public async Task<IActionResult> Edit(int id, [Bind("TicketId,TicketName,Description")] App.Models.Airline.TicketClass ticketClass)
         {
             if (id != ticketClass.TicketId)
             {

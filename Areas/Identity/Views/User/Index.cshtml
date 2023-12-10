@@ -29,6 +29,9 @@
             <td>
                 <a class="btn btn-success btn-sm" asp-action="SetPassword" asp-route-id="@user.Id">Đặt mật khẩu</a>
             </td>
+            <td>
+                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@user.Id">Xóa tài khoản</a>
+            </td>
         </tr>
     }
 </table>

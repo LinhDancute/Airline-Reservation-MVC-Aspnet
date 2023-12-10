@@ -19,7 +19,15 @@ namespace App.Models.Airline
         [Required(ErrorMessage = "Phải nhập tên máy bay")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "{0} dài {1} đến {2}")]
         [Display(Name = "Tên máy bay")]
-        public string AirlineName { get; set; }
+        public string? AirlineName { get; set; }
+
+        // mã code máy bay
+        [Display(Name = "Mã IATA")]
+        public string? IATAcode { get; set; }
+
+        // mã code máy bay
+        [Display(Name = "Mã ICAO")]
+        public string? ICAOcode { get; set; }
 
         // Nội dung, thông tin chi tiết về máy bay
         [DataType(DataType.Text)]

@@ -13,7 +13,7 @@ namespace App.Models.Statistical
         // [ForeignKey("AnnualRevenueId")]
         // public AnnualRevenue AnnualRevenueId { get; set; }
 
-        public int AnnualRevenueId { get; set; }
+        public int? AnnualRevenueId { get; set; }
         public long TicketByMonth { get; set; }
         public decimal Revenue { get; set; }
         public ICollection<Invoice> Invoices { get; set; }

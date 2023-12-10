@@ -32,6 +32,18 @@
                 <span asp-validation-for="ArrivalAddress" class="text-danger"></span>
             </div>
 
+            @* <div class="form-group">
+                <label asp-for="FlightSector"></label>
+                <input asp-for="FlightSector" class="form-control" />
+                <span asp-validation-for="FlightSector" class="text-danger"></span>
+            </div> *@
+
+            @* <div class="form-group">
+                <label asp-for="FlightTime"></label>
+                <input asp-for="FlightTime" class="form-control" />
+                <span asp-validation-for="FlightTime" class="text-danger"></span>
+            </div> *@
+
             <div class="form-group">
                 <label asp-for="Gate"></label>
                 <select asp-for="Gate" asp-items="@Html.GetEnumSelectList<App.Models.Airline.FlightRoute.GateType>()"

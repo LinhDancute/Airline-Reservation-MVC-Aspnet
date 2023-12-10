@@ -59,13 +59,14 @@ namespace App.Areas.Airline.Controllers
         // POST: FlightRoute/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartureAddress,ArrivalAddress,Gate,Status")] FlightRoute flightRoute)
+        public async Task<IActionResult> Create([Bind("DepartureAddress,ArrivalAddress,FlightSector,FlightSectorName,Gate,Status")] FlightRoute flightRoute)
         {
             if (ModelState.IsValid)
             {
+
                 var departureAirport = await _context.Airports.FirstOrDefaultAsync(a => a.Abbreviation == flightRoute.DepartureAddress);
                 var arrivalAirport = await _context.Airports.FirstOrDefaultAsync(a => a.Abbreviation == flightRoute.ArrivalAddress);
-
+                
                 if (departureAirport != null && departureAirport.Status == App.Models.Airline.Airport.AirportStatus.Closed)
                 {
                     ModelState.AddModelError("DepartureAddress", "Điểm đi đã đóng cửa.");
@@ -78,6 +79,18 @@ namespace App.Areas.Airline.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    var existingRoute = await _context.FlightRoutes
+                        .FirstOrDefaultAsync(fr => fr.FlightRouteId != flightRoute.FlightRouteId
+                        && fr.DepartureAddress == flightRoute.DepartureAddress
+                        && fr.ArrivalAddress == flightRoute.ArrivalAddress);
+
+                    if (existingRoute != null)
+                    {
+                        ModelState.AddModelError(string.Empty, "Chuyến bay đã tồn tại với cùng điểm đi và điểm đến.");
+                        ViewBag.Airports = _context.Airports.ToList();
+                        return View(flightRoute);
+                    }
+
                     if (flightRoute.DepartureAddress == flightRoute.ArrivalAddress)
                     {
                         ModelState.AddModelError("ArrivalAddress", "Điểm đi phải khác điểm đến.");
@@ -85,16 +98,41 @@ namespace App.Areas.Airline.Controllers
                         return View(flightRoute);
                     }
 
+                    flightRoute.FlightSector = $"{flightRoute.DepartureAddress}-{flightRoute.ArrivalAddress}";
+
+                    var departureAirportName = (await _context.Airports.FirstOrDefaultAsync(a => a.Abbreviation == flightRoute.DepartureAddress))?.AirportName;
+                    var arrivalAirportName = (await _context.Airports.FirstOrDefaultAsync(a => a.Abbreviation == flightRoute.ArrivalAddress))?.AirportName;
+
+                    flightRoute.FlightSectorName = $"{departureAirportName} - {arrivalAirportName}";
+
+                    var flightRouteAirport = new FlightRoute_Airport
+                    {
+                        FlightRouteID = flightRoute.FlightRouteId, 
+                        AirportID = departureAirport.AirportId
+                    };
+
                     _context.Add(flightRoute);
+                    _context.Add(flightRouteAirport);
+
+                    flightRoute.FlightRoute_Airports = new List<FlightRoute_Airport> { flightRouteAirport };
+
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
+                }
+            }
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    // Log or debug the validation error messages
+                    Console.WriteLine($"Validation Error: {error.ErrorMessage}");
                 }
             }
 
             ViewBag.Airports = _context.Airports.ToList();
             return View(flightRoute);
         }
-
+        
         // GET: FlightRoute/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -116,11 +154,9 @@ namespace App.Areas.Airline.Controllers
             return View(flightRoute);
         }
 
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FlightRouteId,DepartureAddress,ArrivalAddress,Gate,Status")] FlightRoute flightRoute)
+        public async Task<IActionResult> Edit(int id, [Bind("FlightRouteId,DepartureAddress,ArrivalAddress,FlightSector,FlightSectorName,Gate,Status")] FlightRoute flightRoute)
         {
             if (id != flightRoute.FlightRouteId)
             {
@@ -143,16 +179,35 @@ namespace App.Areas.Airline.Controllers
                     ModelState.AddModelError("ArrivalAddress", "Điểm đến đã đóng cửa.");
                 }
 
-                // Check if departure and arrival addresses are the same
                 if (flightRoute.DepartureAddress == flightRoute.ArrivalAddress)
                 {
                     ModelState.AddModelError("ArrivalAddress", "Điểm đi phải khác điểm đến.");
                 }
 
+                var existingRoute = await _context.FlightRoutes
+                    .FirstOrDefaultAsync(fr => fr.FlightRouteId != flightRoute.FlightRouteId
+                                        && fr.DepartureAddress == flightRoute.DepartureAddress
+                                        && fr.ArrivalAddress == flightRoute.ArrivalAddress);
+
+                if (existingRoute != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Chuyến bay đã tồn tại với cùng điểm đi và điểm đến.");
+                    // Ensure that ViewBag.Airports is properly populated
+                    ViewBag.Airports = _context.Airports.ToList();
+                    return View(flightRoute);
+                }   
+
                 if (ModelState.IsValid)
                 {
                     try
                     {
+                        flightRoute.FlightSector = $"{flightRoute.DepartureAddress}-{flightRoute.ArrivalAddress}";
+
+                        var departureAirportName = (await _context.Airports.FirstOrDefaultAsync(a => a.Abbreviation == flightRoute.DepartureAddress))?.AirportName;
+                        var arrivalAirportName = (await _context.Airports.FirstOrDefaultAsync(a => a.Abbreviation == flightRoute.ArrivalAddress))?.AirportName;
+
+                        flightRoute.FlightSectorName = $"{departureAirportName} - {arrivalAirportName}";
+
                         _context.Update(flightRoute);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
