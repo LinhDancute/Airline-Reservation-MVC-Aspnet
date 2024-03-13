@@ -182,7 +182,6 @@ namespace AirlineReservationVietjet.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FlightSector")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float?>("FlightTime")
@@ -556,7 +555,7 @@ namespace AirlineReservationVietjet.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyRevenueId"));
 
-                    b.Property<int>("AnnualRevenueId")
+                    b.Property<int?>("AnnualRevenueId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Revenue")

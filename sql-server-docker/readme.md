@@ -10,7 +10,7 @@ docker-compose start
 ```
 ## Xóa dịch vụ
 ```
-docker-compose downn
+docker-compose down
 ```
 ## Kiểm tra container đang chạy
 ```

@@ -16,8 +16,12 @@
                 @Html.DisplayNameFor(model => model.First().CMND)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.First().FlightId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.First().Published)
             </th>
+            <th>Ngày</th>
             <th></th>
         </tr>
     </thead>
@@ -32,8 +36,12 @@
                     </a>
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.FlightId)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Published)
                 </td>
+                <td>15/02/2024</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TicketId">Sửa</a> |
                     <a asp-action="Details" asp-route-id="@item.TicketId">Chi tiết</a> |
