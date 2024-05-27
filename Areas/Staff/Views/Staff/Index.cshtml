@@ -1,0 +1,46 @@
+@model App.Areas.Staff.StaffListModel
+@{
+    ViewData["Title"] = "Danh sách các thành viên";
+}
+<h2>@ViewData["Title"]</h2>
+<partial name="_StatusMessage"></partial>
+<p>Tổng số thành viên: @Model.totalStaffs</p>
+
+<table class="table">
+    <tr>
+        <th>Họ</th>
+        <th>Tên</th>
+        <th>Vai trò (role)</th>
+        <th>Tác vụ</th>
+    </tr>
+    @foreach (var staff in Model.staffs)
+    {
+        <tr>
+            <td>@staff.FirstName</td>
+            <td>@staff.LastName</td>
+            <td>
+                @if (string.IsNullOrEmpty(staff.RoleNames))
+                {
+                    <a class="text-dark" asp-action="AddRole" asp-route-id="@staff.Id">+ Thêm roles</a>
+                }
+                else
+                {
+                    <a asp-action="AddRole" asp-route-id="@staff.Id">@staff.RoleNames</a>
+                }
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm" asp-action="SetPassword" asp-route-id="@staff.Id">Đặt mật khẩu</a>
+            </td>
+        </tr>
+    }
+</table>
+@{
+    var pagingmodel = new PagingModel()
+    {
+        currentpage = Model.currentPage,
+        countpages = Model.countPages,
+        generateUrl = (int? p) => Url.Action("Index", new { p = p})
+    };
+}
+
+<partial name="_Paging" model="@pagingmodel" />
